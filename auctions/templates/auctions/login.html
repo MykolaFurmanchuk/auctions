@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2 class="blue-text">Вхід</h2>
+
+    {% if message %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+    <form class="login-form" action="{% url 'auctions:login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="username" placeholder="Псевдонім">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Пароль">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Увійти">
+    </form>
+    <div class="center-text">
+      Немаєте аккаунта? <a href="{% url 'auctions:register' %}">Зареєструйтесь тут.</a>
+    </div>
+{% endblock %}

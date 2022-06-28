@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  <h2 class="blue-text">Категорії</h2>
+
+  {% if category_list %}
+    <ul class="category-list bg-light">
+    {% for key, category in category_list.items %}
+        <a class="btn btn-warning" href="#{{ key }}">{{ key }}</a>
+    {% endfor %}
+    </ul>
+    <hr>
+    {% for key, category in category_list.items %}
+    <h3 class="blue-text category-title" id="{{ key }}">{{ key }}</h3>
+      <ul class="listings">
+        {% for list in category %}
+         {% if list.listing.date_closed >= today %}
+            <div class="card">
+              <div class="card-header">
+                {{ list.listing.name }}
+              </div>
+              <div class="card-body">
+                <img alt="{{ list.listing.name }} - img" src="{{ list.listing.image.url }}" height="170" />
+                {% if list.bid != None %}
+                <h5 class="list-cost" style="color: var(--danger)">Аукціон розпочався</h5>
+                <h5 class="list-cost">Найбільша ставка наразі: <strong style="color: var(--warning)">${{ list.bid.highest_bid }}</strong></h5>
+                {% else %}
+                <h5 class="list-cost" style="color: var(--success)">Наразі немає ставок</h5>
+                <h5 class="list-cost">Ставка починається з: <strong>${{ list.listing.initial }}</strong> </h5>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <div class="links-box">
+                  <a class="btn btn-outline-primary" href="{% url 'auctions:listing' list.listing.id %}">Детальніше</a>
+                  {% if list.listing.user == user %}
+                  <a class="btn btn-outline-danger" href="{% url 'auctions:close_listing' list.listing.id %}">Закрити лот</a>
+                  {% else %}
+                  <a class="btn btn-outline-success" href="{% url 'auctions:add_to' list.listing.id %}">Додати до кошика</a>
+                  {% endif %}
+                </div>
+                {% else %}
+                <a class="nav-link" href="{% url 'auctions:login' %}"> Увійдіть щоб ознайомитися детальніше </a>
+                {% endif %}
+                <h6 class="text-muted right-align">Дата опублікування: {{ list.listing.created }}</h6>
+              </div>
+            </div>
+            {%endif%}
+        {% endfor %}
+      </ul>
+      <hr>
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  <h2 class="blue-text">Кошик</h2>
+
+  {% if message %}
+  <div class="alert alert-info">
+    {{ message }}
+  </div>
+  {% endif %}
+
+  {% if listings %}
+  <div class="card border-success success-card">
+    <h4 class="card-header border-success bg-light">Успішно {{ request.user }}!</h4>
+    <div class="card-body">
+      <img src="{{ listing.image.url }}" alt="{{ listing.name }}" height="200" />
+      <br>
+      Ви успішно виграли ставку: <strong style="color: var(--gray)">{{ listing.name }}</strong>
+      <br>
+      За ціною: <strong style="color: var(--warning)">${{ bid.highest_bid }}</strong>
+    </div>
+  </div>
+  {% endif %}
+
+{% endblock %}
